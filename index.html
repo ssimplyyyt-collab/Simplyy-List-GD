@@ -3,16 +3,21 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=1024" />
+
         <title>NTCD List</title>
 
-        <!-- Replace your server icon by uploading an image file named "list_icon.png"-->
+        <!-- Server/list icon -->
         <link rel="icon" href="/list_icon.png" />
+
+        <!-- Font -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
             href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@500;700&display=swap"
             rel="stylesheet"
         />
+
+        <!-- Stylesheets -->
         <link rel="stylesheet" type="text/css" href="/css/reset.css" />
         <link rel="stylesheet" type="text/css" href="/css/typography.css" />
         <link rel="stylesheet" type="text/css" href="/css/main.css" />
@@ -22,7 +27,11 @@
             type="text/css"
             href="/css/pages/leaderboard.css"
         />
-        <link rel="stylesheet" type="text/css" href="/css/pages/roulette.css" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="/css/pages/roulette.css"
+        />
         <link rel="stylesheet" type="text/css" href="/css/components/nav.css" />
         <link rel="stylesheet" type="text/css" href="/css/components/btn.css" />
         <link
@@ -30,27 +39,41 @@
             type="text/css"
             href="/css/components/tabs.css"
         />
+
+        <!-- Vue -->
         <script src="https://unpkg.com/vue@3.2.31/dist/vue.global.js"></script>
         <script src="https://unpkg.com/vue-router@4.0.14/dist/vue-router.global.prod.js"></script>
         <script type="module" src="/js/main.js"></script>
     </head>
+
     <body id="app">
         <header :class="{ dark: store.dark }">
+
+            <!-- List Logo / Name -->
             <div class="logo">
                 <h2>NTCD List</h2>
                 <p>v1.0.0</p>
             </div>
+
+            <!-- Navigation -->
             <nav class="nav">
+
                 <router-link class="nav__tab" to="/">
                     <span class="type-label-lg">List</span>
                 </router-link>
+
                 <router-link class="nav__tab" to="/leaderboard">
                     <span class="type-label-lg">Leaderboard</span>
-                </router-link>D
+                </router-link>
+
                 <router-link class="nav__tab" to="/roulette">
                     <span class="type-label-lg">Roulette</span>
                 </router-link>
+
+                <!-- Navigation Actions -->
                 <div class="nav__actions">
+
+                    <!-- Dark mode -->
                     <button
                         class="nav__icon"
                         @click.prevent="store.toggleDark()"
@@ -60,20 +83,29 @@
                             alt=""
                         />
                     </button>
-                    <!-- Replace the '#' with your discord server's invite-->
+
+                    <!-- Discord -->
+                    <!-- Replace # with your Discord invite -->
                     <a class="nav__icon" href="#">
                         <img src="/assets/discord.svg" alt="Discord Logo" />
                     </a>
-                    <!-- List record submission form, add a link to replace the '#' when putting a link to your list submission form-->
+
+                    <!-- Submit Record -->
+                    <!-- Replace # with your submission form -->
                     <a
                         class="nav__cta type-label-lg"
                         href="#"
                         target="_blank"
-                        >Submit Record</a
                     >
+                        Submit Record
+                    </a>
+
                 </div>
             </nav>
         </header>
+
+        <!-- Page Content -->
         <router-view :class="{ dark: store.dark }"></router-view>
+
     </body>
 </html>
