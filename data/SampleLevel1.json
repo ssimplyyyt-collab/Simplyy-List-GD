@@ -1,18 +1,11 @@
 {
-    "id": 57436521,
-    "name": "SampleLevel1",
-    "author": "LevelUploader",
-    "creators": ["Creator1", "Creator2", "Creator3"],
-    "verifier": "Verifier",
-    "verification": "https://www.youtube.com/watch?v=ISTl28wKSXc",
-    "percentToQualify": 56,
+    "id": 48353992,
+    "name": "Pumped up kicks",
+    "author": "Quiken",
+    "creators": ["Quiken & More"],
+    "verifier": "Simplyy",
+    "verification": "https://youtu.be/ykJIpl7NtGM?si=l-1JjASsi8NOtX1S",
+    "percentToQualify": 60,
     "password": "Not Copyable",
-    "records": [
-        {
-            "user": "Sample_Victor_1",
-            "link": "https://www.youtube.com/watch?v=MgJeijBGKHU",
-            "percent": 100,
-            "hz": 360
-        }
-    ]
+    "records": []
 }
