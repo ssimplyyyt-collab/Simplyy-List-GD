@@ -60,8 +60,7 @@ export default {
                 </table>
             </div>
 
-
-            <!-- LEVEL -->
+            <!-- LEVEL CONTENT -->
             <div class="level-container">
 
                 <div class="level" v-if="level">
@@ -75,7 +74,7 @@ export default {
                     ></LevelAuthors>
 
 
-                    <!-- YOUTUBE VIDEO -->
+                    <!-- YOUTUBE -->
                     <iframe
                         v-if="isYouTube"
                         class="video"
@@ -87,7 +86,7 @@ export default {
                     ></iframe>
 
 
-                    <!-- MEDAL VIDEO -->
+                    <!-- MEDAL -->
                     <div
                         v-else-if="isMedal"
                         class="video medal-video"
@@ -124,10 +123,6 @@ export default {
                         <div class="medal-message">
 
                             <h2>Verification Video</h2>
-
-                            <p>
-                                This video is hosted externally.
-                            </p>
 
                             <a
                                 :href="level.verification"
@@ -198,7 +193,6 @@ export default {
                         This level does not accept new records.
                     </p>
 
-
                     <table class="records">
 
                         <tr
@@ -246,12 +240,7 @@ export default {
                 <!-- NO LEVEL -->
                 <div
                     v-else
-                    class="level"
-                    style="
-                        height: 100%;
-                        justify-content: center;
-                        align-items: center;
-                    "
+                    class="level empty-level"
                 >
                     <p>(ノಠ益ಠ)ノ彡┻━┻</p>
                 </div>
@@ -264,7 +253,6 @@ export default {
 
                 <div class="meta">
 
-                    <!-- ERRORS -->
                     <div
                         class="errors"
                         v-show="errors.length > 0"
@@ -319,7 +307,7 @@ export default {
                     </template>
 
 
-                    <!-- SUBMISSION REQUIREMENTS -->
+                    <!-- REQUIREMENTS -->
                     <h3>Submission Requirements</h3>
 
                     <p>
