@@ -33,8 +33,12 @@ export default {
                     <tr v-for="([level, err], i) in list" :key="i">
 
                         <td class="rank">
-                            <p class="type-label-lg">
-                                {{ i + 1 <= 150 ? "#" + (i + 1) : "Legacy" }}
+                            <p v-if="i + 1 <= 150" class="type-label-lg">
+                                #{{ i + 1 }}
+                            </p>
+
+                            <p v-else class="type-label-lg">
+                                Legacy
                             </p>
                         </td>
 
@@ -47,7 +51,7 @@ export default {
                         >
                             <button @click="selected = i">
                                 <span class="type-label-lg">
-                                    {{ level?.name || "Error (" + err + ".json)" }}
+                                    {{ level?.name || \`Error (\${err}.json)\` }}
                                 </span>
                             </button>
                         </td>
@@ -56,13 +60,11 @@ export default {
                 </table>
             </div>
 
-            <!-- LEVEL INFORMATION -->
+
+            <!-- LEVEL -->
             <div class="level-container">
 
-                <div
-                    class="level"
-                    v-if="level"
-                >
+                <div class="level" v-if="level">
 
                     <h1>{{ level.name }}</h1>
 
@@ -72,15 +74,76 @@ export default {
                         :verifier="level.verifier"
                     ></LevelAuthors>
 
-                    <!-- VIDEO -->
+
+                    <!-- YOUTUBE VIDEO -->
                     <iframe
+                        v-if="isYouTube"
                         class="video"
+                        id="videoframe"
                         :src="video"
                         frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         allowfullscreen
                     ></iframe>
 
-                    <!-- LEVEL STATS -->
+
+                    <!-- MEDAL VIDEO -->
+                    <div
+                        v-else-if="isMedal"
+                        class="video medal-video"
+                    >
+
+                        <div class="medal-message">
+
+                            <h2>Verification Video</h2>
+
+                            <p>
+                                This verification video is hosted on Medal.
+                            </p>
+
+                            <a
+                                :href="level.verification"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="medal-button"
+                            >
+                                Watch on Medal
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- OTHER VIDEO -->
+                    <div
+                        v-else
+                        class="video medal-video"
+                    >
+
+                        <div class="medal-message">
+
+                            <h2>Verification Video</h2>
+
+                            <p>
+                                This video is hosted externally.
+                            </p>
+
+                            <a
+                                :href="level.verification"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="medal-button"
+                            >
+                                Open Verification Video
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- STATS -->
                     <ul class="stats">
 
                         <li>
@@ -117,6 +180,7 @@ export default {
 
                     </ul>
 
+
                     <!-- RECORDS -->
                     <h2>Records</h2>
 
@@ -134,10 +198,11 @@ export default {
                         This level does not accept new records.
                     </p>
 
+
                     <table class="records">
 
                         <tr
-                            v-for="(record, index) in level.records"
+                            v-for="(record, index) in (level.records || [])"
                             :key="index"
                             class="record"
                         >
@@ -158,15 +223,13 @@ export default {
                             </td>
 
                             <td class="mobile">
+
                                 <img
                                     v-if="record.mobile"
-                                    :src="
-                                        '/assets/phone-landscape' +
-                                        (store.dark ? '-dark' : '') +
-                                        '.svg'
-                                    "
+                                    :src="\`/assets/phone-landscape\${store.dark ? '-dark' : ''}.svg\`"
                                     alt="Mobile"
                                 />
+
                             </td>
 
                             <td class="hz">
@@ -179,25 +242,34 @@ export default {
 
                 </div>
 
-                <!-- NO LEVEL SELECTED -->
+
+                <!-- NO LEVEL -->
                 <div
                     v-else
-                    class="level empty-level"
+                    class="level"
+                    style="
+                        height: 100%;
+                        justify-content: center;
+                        align-items: center;
+                    "
                 >
                     <p>(ノಠ益ಠ)ノ彡┻━┻</p>
                 </div>
 
             </div>
 
-            <!-- INFORMATION -->
+
+            <!-- META -->
             <div class="meta-container">
 
                 <div class="meta">
 
+                    <!-- ERRORS -->
                     <div
                         class="errors"
                         v-show="errors.length > 0"
                     >
+
                         <p
                             class="error"
                             v-for="error in errors"
@@ -205,8 +277,11 @@ export default {
                         >
                             {{ error }}
                         </p>
+
                     </div>
 
+
+                    <!-- EDITORS -->
                     <template v-if="editors">
 
                         <h3>List Editors</h3>
@@ -219,12 +294,7 @@ export default {
                             >
 
                                 <img
-                                    :src="
-                                        '/assets/' +
-                                        roleIconMap[editor.role] +
-                                        (store.dark ? '-dark' : '') +
-                                        '.svg'
-                                    "
+                                    :src="\`/assets/\${roleIconMap[editor.role]}\${store.dark ? '-dark' : ''}.svg\`"
                                     :alt="editor.role"
                                 />
 
@@ -248,30 +318,51 @@ export default {
 
                     </template>
 
-                    <!-- REQUIREMENTS -->
+
+                    <!-- SUBMISSION REQUIREMENTS -->
                     <h3>Submission Requirements</h3>
 
                     <p>
                         Achieved the record without using hacks
-                        (FPS bypass is allowed, up to 360fps).
+                        (however, FPS bypass is allowed, up to 360fps)
                     </p>
 
                     <p>
-                        Achieved the record on the level that is listed on
-                        the site. Please check the level ID before submitting.
+                        Achieved the record on the level that is listed
+                        on the site - please check the level ID before
+                        you submit a record
                     </p>
 
                     <p>
                         Have either source audio or clicks/taps in the video.
+                        Edited audio only does not count
                     </p>
 
                     <p>
-                        Do not use secret routes or bug routes.
+                        The recording must have a previous attempt and
+                        entire death animation shown before the completion,
+                        unless the completion is on the first attempt.
+                        Everyplay records are exempt from this
                     </p>
 
                     <p>
-                        Do not use easy modes. Only the unmodified level
-                        qualifies.
+                        The recording must also show the player hit the
+                        endwall, or the completion will be invalidated.
+                    </p>
+
+                    <p>
+                        Do not use secret routes or bug routes
+                    </p>
+
+                    <p>
+                        Do not use easy modes, only a record of the
+                        unmodified level qualifies
+                    </p>
+
+                    <p>
+                        Once a level falls onto the Legacy List, we accept
+                        records for it for 24 hours after it falls off,
+                        then afterwards we never accept records for said level
                     </p>
 
                 </div>
@@ -303,8 +394,31 @@ export default {
             return this.list[this.selected][0];
         },
 
+        isMedal() {
+            if (!this.level?.verification) {
+                return false;
+            }
+
+            return this.level.verification
+                .toLowerCase()
+                .includes("medal.tv");
+        },
+
+        isYouTube() {
+            if (!this.level?.verification) {
+                return false;
+            }
+
+            const url = this.level.verification.toLowerCase();
+
+            return (
+                url.includes("youtube.com") ||
+                url.includes("youtu.be")
+            );
+        },
+
         video() {
-            if (!this.level) {
+            if (!this.level?.verification) {
                 return "";
             }
 
@@ -319,9 +433,9 @@ export default {
 
         if (!this.list) {
 
-            this.errors.push(
-                "Failed to load list. Retry in a few minutes or notify list staff."
-            );
+            this.errors = [
+                "Failed to load list. Retry in a few minutes or notify list staff.",
+            ];
 
         } else {
 
@@ -334,7 +448,9 @@ export default {
             );
 
             if (!this.editors) {
-                this.errors.push("Failed to load list editors.");
+                this.errors.push(
+                    "Failed to load list editors."
+                );
             }
         }
 
